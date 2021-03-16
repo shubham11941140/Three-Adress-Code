@@ -27,6 +27,7 @@ void scope_start()
 	index1++;
 	return;
 }
+
 void scope_end()
 {
 	index1--;
@@ -34,6 +35,7 @@ void scope_end()
 	stack[index1]=0;
 	return;
 }
+
 void if1()
 {
 	label_num++;
@@ -46,6 +48,7 @@ void if1()
 	counter++;
 	label[++ltop]=label_num;
 }
+
 void if2()
 {
 	label_num++;
@@ -53,16 +56,19 @@ void if2()
 	printf("L%d: \n",label[ltop--]);
 	label[++ltop]=label_num;
 }
+
 void if3()
 {
 	printf("\nL%d:\n",label[ltop--]);
 }
+
 void while1()
 {
 	label_num++;
 	label[++ltop]=label_num;
 	printf("\nL%d:\n",label_num);
 }
+
 void while2()
 {
 	label_num++;
@@ -75,28 +81,33 @@ void while2()
 	counter++;
 	label[++ltop]=label_num;
 }
+
 void while3()
 {
 	int y=label[ltop--];
 	printf("\ngoto L%d\n",label[ltop--]);
 	printf("L%d:\n",y);
 }
+
 void dowhile1()
 {
 	label_num++;
 	label[++ltop]=label_num;
 	printf("\nL%d:\n",label_num);
 }
+
 void dowhile2()
 {
  	printf("\nif %s goto L%d\n",st1[top--],label[ltop--]);
 }
+
 void for1()
 {
 	label_num++;
 	label[++ltop]=label_num;
 	printf("\nL%d:\n",label_num);
 }
+
 void for2()
 {
 	label_num++;
@@ -115,21 +126,25 @@ void for2()
 	printf("L%d:\n",label_num);
 	label[++ltop]=label_num;
 }
+
 void for3()
 {
 	printf("\ngoto L%d\n",label[ltop-3]);
 	printf("L%d:\n",label[ltop-1]);
 }
+
 void for4()
 {
 	printf("\ngoto L%d\n",label[ltop]);
 	printf("L%d:\n",label[ltop-2]);
 	ltop-=4;
 }
+
 void push(char *a)
 {
 	strcpy(st1[++top],a);
 }
+
 void array1()
 {
 	strcpy(temp,"t");
@@ -147,14 +162,17 @@ void array1()
 	strcpy(st1[top],temp);
 	counter++;
 }
+
 void codegen()
 {
 	strcpy(temp,"t");
 	char snum[10];
 	sprintf(snum, "%d", counter); 
 	strcat(temp,snum);	
-	if (strcmp(st1[top-1],"!") == 0 || strcmp(st1[top-1],"++") == 0 
-			||  strcmp(st1[top-1],"--") == 0 || strcmp(st1[top-1],"~") == 0)
+	if (strcmp(st1[top-1],"!") == 0 
+			|| strcmp(st1[top-1],"++") == 0 
+				||  strcmp(st1[top-1],"--") == 0 
+					|| strcmp(st1[top-1],"~") == 0)
 	{
 		printf("\n%s = %s %s\n",temp,st1[top-1],st1[top]);
 		top--;
@@ -163,7 +181,8 @@ void codegen()
 	{
 		printf("\n%s = %s %s %s\n",temp,st1[top-2],st1[top-1],st1[top]);		
 		int sc = returnscope(st1[top-2],stack[index1-1]);
-		if ((isdigit(st1[top-2][0]) == 0) && (isdigit(st1[top][0]) == 0))
+		if ((isdigit(st1[top-2][0]) == 0) 
+				&& (isdigit(st1[top][0]) == 0))
 		{
 			if (returntype(st1[top-2],sc) != returntype(st1[top],sc))
 			{
@@ -175,6 +194,7 @@ void codegen()
 	strcpy(st1[top],temp);
 	counter++;
 }
+
 void codegen_umin()
 {
 	strcpy(temp,"t");
@@ -186,6 +206,7 @@ void codegen_umin()
 	strcpy(st1[top],temp);
 	counter++;
 }
+
 void codegen_assign()
 {
 
@@ -193,7 +214,8 @@ void codegen_assign()
 	printf("\n%s = %s\n",st1[top-2],st1[top]);
 	if (top > 5)
 	{
-		if (returntype(st1[top-4],scopcur) != returntype(st1[top-2],scopcur) && strncmp(st1[top],"t",1) == 0)
+		if (returntype(st1[top-4],scopcur) != returntype(st1[top-2],scopcur) 
+				&& strncmp(st1[top],"t",1) == 0)
 		{
 			printf("Type mismatch of %s and %s while performing %s operation\n", st1[top-4], st1[top-2], st1[top-1]);
 		}		
@@ -233,19 +255,28 @@ Function : Type ID '('')'  CompoundStmt
 	{
 		printf("goto F%d\n",lnum1);
 	}
-
-	/*
+	
 	if ($1!=returntype_func(ct))
 	{
 		printf("\nError : Type mismatch : Line %d\n",printline());
-	}
-	*/
+	}	
 
-	if (!(strcmp($2,"printf") && strcmp($2,"scanf") && 
-			strcmp($2,"getc") && strcmp($2,"gets") && strcmp($2,"getchar") 
-				&& strcmp ($2,"puts") && strcmp($2,"putchar") && strcmp($2,"clearerr") 
-					&& strcmp($2,"getw") && strcmp($2,"putw") && strcmp($2,"putc") && strcmp($2,"rewind") 
-						&& strcmp($2,"sprint") && strcmp($2,"sscanf") && strcmp($2,"remove") && strcmp($2,"fflush")))
+	if (!(strcmp($2,"printf") 
+			&& strcmp($2,"scanf") 
+				&& strcmp($2,"getc") 
+					&& strcmp($2,"gets") 
+						&& strcmp($2,"getchar") 
+							&& strcmp ($2,"puts") 
+								&& strcmp($2,"putchar") 
+									&& strcmp($2,"clearerr") 
+										&& strcmp($2,"getw") 
+											&& strcmp($2,"putw") 
+												&& strcmp($2,"putc") 
+													&& strcmp($2,"rewind") 
+														&& strcmp($2,"sprint") 
+															&& strcmp($2,"sscanf") 
+																&& strcmp($2,"remove") 
+																	&& strcmp($2,"fflush")))
 	{
 		printf("Error : Type mismatch in redeclaration of %s : Line %d\n",$2,printline());
 	}		
@@ -265,14 +296,22 @@ Function : Type ID '('')'  CompoundStmt
 		errc++;
 	}
 
-	if (!(strcmp($2,"printf") && strcmp($2,"scanf") &&
-			strcmp($2,"getc") && strcmp($2,"gets") && 
-				strcmp($2,"getchar") && strcmp ($2,"puts") && 
-					strcmp($2,"putchar") && strcmp($2,"clearerr") 
-						&& strcmp($2,"getw") && strcmp($2,"putw") && 
-							strcmp($2,"putc") && strcmp($2,"rewind") && 
-								strcmp($2,"sprint") && strcmp($2,"sscanf") && 
-									strcmp($2,"remove") && strcmp($2,"fflush")))
+	if (!(strcmp($2,"printf") 
+			&& strcmp($2,"scanf") 
+				&& strcmp($2,"getc") 
+					&& strcmp($2,"gets") 
+						&& strcmp($2,"getchar") 
+							&& strcmp ($2,"puts") 
+								&& strcmp($2,"putchar") 
+									&& strcmp($2,"clearerr") 
+										&& strcmp($2,"getw") 
+											&& strcmp($2,"putw") 
+												&& strcmp($2,"putc") 
+													&& strcmp($2,"rewind") 
+														&& strcmp($2,"sprint") 
+															&& strcmp($2,"sscanf") 
+																&& strcmp($2,"remove") 
+																	&& strcmp($2,"fflush")))
 	{
 		printf("Error : Redeclaration of %s : Line %d\n",$2,printline());
 		errc++;
@@ -442,7 +481,9 @@ assignment1 : ID
 {
 	int sct=returnscope($1,stack[index1-1]);
 	int type=returntype($1,sct);
-	if((!(strspn($5,"0123456789")==strlen($5))) && type==258 && fl==0)
+	if((!(strspn($5,"0123456789")==strlen($5))) 
+			&& type==258 
+				&& fl==0)
 	{
 		printf("\nError : Type Mismatch : Line %d\n",printline());
 	}			
@@ -450,7 +491,9 @@ assignment1 : ID
 	{
 		int currscope=stack[index1-1];
 		int scope=returnscope($1,currscope);
-		if((scope<=currscope && end[scope]==0) && !(scope==0))
+		if((scope<=currscope 
+				&& end[scope]==0) 
+					&& !(scope==0))
 		{
 			check_scope_update($1,$5,currscope);
 		}
@@ -472,94 +515,13 @@ assignment1 : ID
 		printf("\nUndeclared Variable %s : Line %d\n",$1,printline());
 	}		
 }
-
-//	| function_call
 	| consttype
 	;
-
-/*
-function_call: ID '=' E '(' paralist ')'			//function call
-{
-	int sct=returnscope($1,stack[top-1]);
-	int type=returntype($1,sct);							
-	int rtype;
-	rtype=returntypef($3); 
-	int ch=0;
-	if(rtype!=type)
-	{
-		printf("\nError : Type Mismatch : Line %d\n",printline());
-		errc++;
-	}
-	if(!lookup($1))
-	{
-		for(j=0;j<=l;j++)
-		{
-			ch = ch+checkp($3,flist[j],j);
-		}
-		if(ch>0)
-		{
-			printf("\nError : Parameter Type Mistake or Function undeclared : Line %d\n",printline()); 
-			errc++;
-		}
-		l=-1;
-	}
-}
-	| ID '(' paralist ')'			//function call without assignment
-{
-	int sct=returnscope($1,stack[top-1]);
-	int type=returntype($1,sct); 
-	int ch=0;
-	if(!lookup($1))
-	{
-		for(j=0;j<=l;j++)
-		{
-			ch = ch+checkp($1,flist[j],j);
-		}
-		if(ch>0) 
-		{ 
-			printf("\nError : Parameter Type Mistake or Required Function undeclared : Line %d\n",printline()); 
-			errc++;
-		}
-		l=-1;
-	}
-	else 
-	{
-		printf("\nUndeclared Function %s : Line %d\n",$1,printline());
-		errc++;
-	}
-}
-	;
-
-paralist : paralist ',' param
-				| param
-				;
-
-param : ID
-{
-	if(lookup($1))
-	{
-		printf("\nUndeclared Variable %s : Line %d\n",$1,printline());
-		errc++;
-	}
-	else
-	{
-		int sct=returnscope($1,stack[top-1]);
-		flist[++l]=returntype($1,sct);
-	}
-}
-	;
-*/
 
 consttype : NUM
 	| REAL
 	| CHARACTER_LITERAL
 	;
-
-/*
-start:BUILTIN varlist SC NL {printf("valid");}
-|
-varlist:varlist COMMA ID|ID;
-*/
 
 enddec: ',' Declaration 
 	| ';'
@@ -579,7 +541,9 @@ Declaration : Type ID
 }
 	 enddec
 {
-	if( (!(strspn($6,"0123456789")==strlen($6))) && $1==258 && (fl==0))
+	if( (!(strspn($6,"0123456789")==strlen($6))) 
+			&& $1==258 
+				&& (fl==0))
 	{
 		printf("\nError : Type Mismatch : Line %d\n",printline());
 		fl=1;
@@ -617,13 +581,7 @@ Declaration : Type ID
 }
 	 enddec
 {
-	/*
-	if( (!(strspn($3,"0123456789")==strlen($8))) && $1==258 && (fl==0))
-	{
-		printf("\nError : Type Mismatch : Line %d\n",printline());
-		fl=1;
-	}
-	*/
+
 	curtype = $1;
 	if(!lookup($2))
 	{
@@ -656,7 +614,9 @@ Declaration : Type ID
 	{
 		int currscope=stack[index1-1];
 		int scope=returnscope($1,currscope);
-		if(!(scope<=currscope && end[scope]==0) || scope==0)
+		if(!(scope<=currscope 
+				&& end[scope]==0) 
+					|| scope==0)
 		{
 			printf("\nError : Variable %s out of scope : Line %d\n",$1,printline());
 		}						
@@ -970,7 +930,7 @@ F : '(' E ')'
 %%
 
 #include "lex.yy.c"
-#include<ctype.h>
+#include <ctype.h>
 
 int main(int argc, char *argv[])
 {
@@ -993,6 +953,7 @@ void yyerror(const char *s)
 {
 	printf("\nLine %d : %s %s\n",yylineno,s,yytext);
 }
+
 int printline()
 {
 	return yylineno;
